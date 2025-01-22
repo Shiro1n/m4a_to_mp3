@@ -27,7 +27,9 @@ class Translations:
                 "conversion_error": "Dönüşüm hatası: {}",
                 "clear_all": "Tümünü Temizle",
                 "select_all": "Tümünü Seç",
-                "remove_selected": "Seçilenleri Kaldır"
+                "remove_selected": "Seçilenleri Kaldır",
+                "stop": "Durdur",
+                "conversion_cancelled": "Dönüştürme iptal edildi"
             },
             "en": {
                 "title": "M4A to MP3 Converter",
@@ -55,7 +57,10 @@ class Translations:
                 "conversion_error": "Conversion error: {}",
                 "clear_all": "Clear All",
                 "select_all": "Select All",
-                "remove_selected": "Remove Selected"
+                "remove_selected": "Remove Selected",
+                "stop": "Stop",
+                "conversion_cancelled": "Conversion cancelled"
+
             }
         }
         self.current_lang = "tr"

@@ -63,6 +63,7 @@ class ConverterGUI:
 
         # Bind convert button to conversion method
         self.controls.start_conversion = self.start_conversion
+        self.controls.stop_conversion = self.stop_conversion
 
     def check_ffmpeg(self):
         """Check for FFmpeg installation."""
@@ -135,6 +136,14 @@ class ConverterGUI:
             self.controls.reset_progress()
             self.controls.set_converting_state(False)
 
+    def stop_conversion(self):
+        """Stop the conversion process"""
+        self.converter.cancel_conversion()
+        self.controls.update_status(self.translations.get("conversion_cancelled"))
+
     def start_conversion(self):
-        """Start the conversion process."""
-        asyncio.run(self.convert_files())
+        """Start the conversion process in a background thread."""
+        import threading
+        thread = threading.Thread(target=lambda: asyncio.run(self.convert_files()))
+        thread.daemon = True
+        thread.start()

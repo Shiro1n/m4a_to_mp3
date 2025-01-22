@@ -92,17 +92,47 @@ class ControlsComponent:
         self.status = ttk.Label(self.frame, textvariable=self.status_var)
         self.status.grid(row=4, column=0, columnspan=3, sticky="w")
 
+        # Button frame for convert and stop buttons
+        button_frame = ttk.Frame(self.frame)
+        button_frame.grid(row=5, column=0, columnspan=3, pady=10)
+
         self.convert_btn = ttk.Button(
-            self.frame,
+            button_frame,
             text=self.translations.get("convert"),
             command=self._handle_convert_click
         )
-        self.convert_btn.grid(row=5, column=0, columnspan=3, pady=10)
+        self.convert_btn.pack(side="left", padx=5)
+
+        self.stop_btn = ttk.Button(
+            button_frame,
+            text=self.translations.get("stop"),
+            command=self._handle_stop_click,
+            state="disabled"  # Initially disabled
+        )
+        self.stop_btn.pack(side="left", padx=5)
 
     def _handle_convert_click(self):
         """Handle convert button click"""
         if self.start_conversion:
+            self.convert_btn.state(['disabled'])
+            self.stop_btn.state(['!disabled'])  # Enable stop button
             self.start_conversion()
+
+    def _handle_stop_click(self):
+        """Handle stop button click"""
+        if self.stop_conversion:
+            self.stop_conversion()
+            self.stop_btn.state(['disabled'])
+            self.convert_btn.state(['!disabled'])
+
+    def set_converting_state(self, is_converting):
+        if is_converting:
+            self.convert_btn.state(['disabled'])
+            self.stop_btn.state(['!disabled'])
+        else:
+            self.convert_btn.state(['!disabled'])
+            self.stop_btn.state(['disabled'])
+            self.progress_var.set(0)  # Reset progress bar
 
     def update_translations(self):
         """Update all text elements with current translations"""
