@@ -1,3 +1,6 @@
+import src.pydub_override
+import src.subprocess_handler
+import logging
 import os
 import sys
 import tkinter as tk
@@ -5,17 +8,13 @@ from tkinter import messagebox
 
 
 def setup_tkdnd():
-    """Setup TkinterDnD2 library paths"""
     try:
-        if getattr(sys, 'frozen', False):
-            base_dir = sys._MEIPASS
-        else:
-            base_dir = os.path.dirname(os.path.abspath(__file__))
-
-        # Import tkinterdnd2 after setting up paths
         import tkinterdnd2
-        return tkinterdnd2.TkinterDnD.Tk()
-    except Exception as e:
+        root = tkinterdnd2.TkinterDnD.Tk()
+        logging.info("TkinterDnD initialized successfully.")
+        return root
+    except ImportError as e:
+        logging.error(f"TkinterDnD initialization failed: {e}")
         root = tk.Tk()
         messagebox.showwarning(
             "Limited Functionality",
@@ -25,17 +24,13 @@ def setup_tkdnd():
 
 
 def main():
-    from src import ConverterGUI
-
+    from src.gui import ConverterGUI
     root = setup_tkdnd()
     root.title("M4A to MP3 Converter")
-
-    # Set minimum window size
     root.minsize(600, 400)
 
-    # Center the window on screen
-    window_width = 800
-    window_height = 600
+    # Center window
+    window_width, window_height = 800, 600
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width - window_width) // 2
